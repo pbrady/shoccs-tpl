@@ -12,6 +12,7 @@ find_package(sol2 QUIET)
 find_package(Catch2 3 QUIET)
 find_package(range-v3 QUIET)
 find_package(fmt QUIET)
+find_package(pugixml QUIET)
 
 set(lua_platform "generic")
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -80,4 +81,12 @@ if (NOT fmt_FOUND)
                     -D FMT_DOC=OFF
                     -D FMT_INSTALL=ON
                     -D FMT_TEST=OFF)
+endif()
+
+if (NOT pugixml_FOUND)
+    ExternalProject_ADD(external_pugixml
+        GIT_REPOSITORY git@github.com:zeux/pugixml.git
+        INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CMAKE_ARGS  -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                    -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER})
 endif()
