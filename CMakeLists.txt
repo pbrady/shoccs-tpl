@@ -13,6 +13,8 @@ find_package(Catch2 3 QUIET)
 find_package(range-v3 QUIET)
 find_package(fmt QUIET)
 find_package(pugixml QUIET)
+find_package(spdlog QUIET)
+find_package(cxxopts QUIET)
 
 set(lua_platform "generic")
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -62,6 +64,7 @@ endif()
 if (NOT range-v3_FOUND)
     ExternalProject_Add(external_ranges
         GIT_REPOSITORY git@github.com:ericniebler/range-v3.git
+        GIT_SUBMODULES_RECURSE OFF
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
             -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -69,7 +72,8 @@ if (NOT range-v3_FOUND)
             -D RANGES_BUILD_CALENDAR_EXAMPLE=OFF
             -D RANGE_V3_TESTS=OFF
             -D RANGE_V3_EXAMPLES=OFF
-            -D RANGE_V3_DOCS=OFF)
+            -D RANGE_V3_DOCS=OFF
+            -D RANGE_V3_PERF=OFF)
 endif()
 
 if (NOT fmt_FOUND)
@@ -89,4 +93,25 @@ if (NOT pugixml_FOUND)
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS  -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                     -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER})
+endif()
+
+if (NOT spdlog_FOUND)
+    ExternalProject_ADD(external_spdlog
+        GIT_REPOSITORY git@github.com:gabime/spdlog.git
+        INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                   -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    )
+endif()
+
+if (NOT cxxopts_FOUND)
+    ExternalProject_ADD(external_cxxopts
+        GIT_REPOSITORY git@github.com:jarro2783/cxxopts.git
+        GIT_TAG v2.2.1
+        INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                   -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                   -D CXXOPTS_BUILD_EXAMPLES=OFF
+                   -D CXXOPTS_BUILD_TESTS=OFF                   
+    )
 endif()
