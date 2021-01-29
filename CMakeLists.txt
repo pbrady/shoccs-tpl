@@ -98,6 +98,7 @@ endif()
 if (NOT spdlog_FOUND)
     ExternalProject_ADD(external_spdlog
         GIT_REPOSITORY git@github.com:gabime/spdlog.git
+        GIT_TAG v1.8.2
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                    -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
