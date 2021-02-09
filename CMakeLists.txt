@@ -27,6 +27,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
     set (lua_platform "freebsd")
 endif()
 
+find_program(MAKE_EXECUTABLE NAMES nmake gmake make)
 
 if (NOT Lua_FOUND)
    
@@ -34,6 +35,8 @@ if (NOT Lua_FOUND)
         URL https://www.lua.org/ftp/lua-5.3.6.tar.gz
         URL_HASH MD5=83f23dbd5230140a3770d5f54076948d
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CONFIGURE_COMMAND ""
+        BUILD_IN_SOURCE ON
         BUILD_COMMAND CC=${CMAKE_C_COMPILER} ${MAKE_EXECUTABLE} ${lua_platform}
         INSTALL_COMMAND ${MAKE_EXECUTABLE} install INSTALL_TOP=<INSTALL_DIR>
     )
@@ -53,7 +56,7 @@ endif()
 if (NOT Catch2_FOUND)
     ExternalProject_Add(external_catch2
         GIT_REPOSITORY git@github.com:catchorg/Catch2.git
-        GIT_TAG dev-v3
+        GIT_TAG devel
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                     -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
