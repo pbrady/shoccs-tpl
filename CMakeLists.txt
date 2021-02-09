@@ -12,7 +12,7 @@ find_package(sol2 QUIET)
 find_package(Catch2 3 QUIET)
 find_package(range-v3 QUIET)
 find_package(fmt QUIET)
-find_package(pugixml QUIET)
+find_package(pugixml 1.10 QUIET)
 find_package(spdlog QUIET)
 find_package(cxxopts QUIET)
 
