@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Lua QUIET)
+find_package(Lua 5.3 QUIET)
 find_package(sol2 QUIET)
 find_package(Catch2 3 QUIET)
 find_package(range-v3 QUIET)
@@ -45,7 +45,7 @@ endif()
 if (NOT sol2_FOUND)
     ExternalProject_Add(external_sol2
         GIT_REPOSITORY git@github.com:ThePhD/sol2.git
-        GIT_TAG develop
+        GIT_TAG v3.2.2
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                     -D CMAKE_C_COMPILER=${CMAKE_C_COMPILER}
