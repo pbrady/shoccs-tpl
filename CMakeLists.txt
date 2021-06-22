@@ -82,9 +82,11 @@ endif()
 if (NOT fmt_FOUND)
     ExternalProject_Add(external_fmt
         GIT_REPOSITORY git@github.com:fmtlib/fmt.git
+        GIT_TAG 7.1.3
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS  -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                     -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                    -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                     -D FMT_DOC=OFF
                     -D FMT_INSTALL=ON
                     -D FMT_TEST=OFF)
@@ -95,17 +97,34 @@ if (NOT pugixml_FOUND)
         GIT_REPOSITORY git@github.com:zeux/pugixml.git
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS  -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-                    -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER})
+                    -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                    -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
 endif()
 
 if (NOT spdlog_FOUND)
-    ExternalProject_ADD(external_spdlog
+    if (NOT fmt_FOUND)
+        ExternalProject_ADD(external_spdlog
         GIT_REPOSITORY git@github.com:gabime/spdlog.git
-        GIT_TAG v1.8.2
+        GIT_TAG v1.8.5
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-                   -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    )
+                -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                -D SPDLOG_FMT_EXTERNAL=ON
+                -D CMAKE_PREFIX_PATH:PATH=<INSTALL_DIR>
+        )
+        ExternalProject_Add_StepDependencies(external_spdlog configure external_fmt)
+    else()
+        ExternalProject_ADD(external_spdlog
+            GIT_REPOSITORY git@github.com:gabime/spdlog.git
+            GIT_TAG v1.8.5
+            INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+            CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                    -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                    -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                    -D SPDLOG_FMT_EXTERNAL=ON
+        )
+    endif()
 endif()
 
 if (NOT cxxopts_FOUND)
@@ -115,6 +134,7 @@ if (NOT cxxopts_FOUND)
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                    -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                   -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                    -D CXXOPTS_BUILD_EXAMPLES=OFF
                    -D CXXOPTS_BUILD_TESTS=OFF                   
     )
