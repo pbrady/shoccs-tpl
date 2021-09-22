@@ -11,9 +11,9 @@ find_package(Lua 5.3 QUIET)
 find_package(sol2 QUIET)
 find_package(Catch2 3 QUIET)
 find_package(range-v3 QUIET)
-find_package(fmt QUIET)
+find_package(fmt 8 QUIET)
 find_package(pugixml 1.10 QUIET)
-find_package(spdlog QUIET)
+find_package(spdlog 1.9 QUIET)
 find_package(cxxopts QUIET)
 
 set(lua_platform "generic")
@@ -82,7 +82,7 @@ endif()
 if (NOT fmt_FOUND)
     ExternalProject_Add(external_fmt
         GIT_REPOSITORY git@github.com:fmtlib/fmt.git
-        GIT_TAG 7.1.3
+        GIT_TAG 8.0.1
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS  -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                     -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -105,7 +105,7 @@ if (NOT spdlog_FOUND)
     if (NOT fmt_FOUND)
         ExternalProject_ADD(external_spdlog
         GIT_REPOSITORY git@github.com:gabime/spdlog.git
-        GIT_TAG v1.8.5
+        GIT_TAG v1.9.2
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                 -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -117,7 +117,7 @@ if (NOT spdlog_FOUND)
     else()
         ExternalProject_ADD(external_spdlog
             GIT_REPOSITORY git@github.com:gabime/spdlog.git
-            GIT_TAG v1.8.5
+            GIT_TAG v1.9.2
             INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
             CMAKE_ARGS -D CMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                     -D CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
